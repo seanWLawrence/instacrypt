@@ -1,21 +1,25 @@
-import Encrypt from '../index';
+import TinyEncrypt from '../index';
 
 describe('CLASS: Encrypt', () => {
 	const password = 'password1';
-	const encrypt: Encrypt = new Encrypt({});
+	const encrypt = TinyEncrypt();
 	const hashedPasswordSync = encrypt.toHashSync(password);
 
 	describe('METHOD: toHash', () => {
 		it('outputs a string from a Promise', () => {
 			encrypt
 				.toHash(password)
-				.then((hashedPassword) => expect(typeof hashedPassword).toBe('string'));
+				.then((hashedPassword: string) =>
+					expect(typeof hashedPassword).toBe('string'),
+				);
 		});
 
 		it('does NOT match the input string', () => {
 			encrypt
 				.toHash(password)
-				.then((hashedPassword) => expect(password).not.toEqual(hashedPassword));
+				.then((hashedPassword: string) =>
+					expect(password).not.toEqual(hashedPassword),
+				);
 		});
 	});
 
@@ -33,10 +37,10 @@ describe('CLASS: Encrypt', () => {
 		it('will return true if original string value is tested against a hashed string value', () => {
 			encrypt
 				.toHash('password1')
-				.then((hashedPassword) =>
+				.then((hashedPassword: string) =>
 					encrypt
 						.isMatch(password, hashedPassword)
-						.then((isTrue) => expect(isTrue).toBe(true)),
+						.then((isTrue: boolean) => expect(isTrue).toBe(true)),
 				);
 		});
 	});
@@ -44,10 +48,10 @@ describe('CLASS: Encrypt', () => {
 	it('will return FALSE if original string does NOT match the hashed string', () => {
 		encrypt
 			.toHash('password2')
-			.then((hashedPassword) =>
+			.then((hashedPassword: string) =>
 				encrypt
 					.isMatch(password, hashedPassword)
-					.then((isTrue) => expect(isTrue).toBe(false)),
+					.then((isTrue: boolean) => expect(isTrue).toBe(false)),
 			);
 	});
 
@@ -64,7 +68,7 @@ describe('CLASS: Encrypt', () => {
 	});
 
 	describe('CONFIGURATION', () => {
-		const encryptWithConfig = new Encrypt({
+		const encryptWithConfig = TinyEncrypt({
 			salt: Buffer.from('exampleSalt'),
 			iterations: 10000,
 			algorithm: 'sha512WithRSAEncryption',

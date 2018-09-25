@@ -1,8 +1,8 @@
 {
-	"name": "encrypt",
-	"version": "1.0.0",
-	"description": "Tiny encrypt/decrypt asynchronous and synchronous srypto helper for Node's built-in pbkdf2 and pbkdf2Sync functions",
-	"main": "index.js",
+	"name": "tiny-encrypt",
+	"version": "0.0.0-development",
+	"description": "Tiny string encryption and comparison library with both async and sync support",
+	"main": "dist/index.js",
 	"homepage": "https://github.com/seanwlawrence//tiny-encrypt#readme",
 	"bugs": {
 		"url": "https://github.com/seanWLawrence/tiny-encrypt/issues"
@@ -18,7 +18,11 @@
 		"test:watch": "jest --watch",
 		"develop": "nodemon",
 		"build": "tsc",
-		"commit": "npx git-cz"
+		"commit": "npm run build && npx git-cz",
+		"ci": "npm run lint && npm run test",
+		"publish": "semantic-release",
+		"travis-deploy-once": "travis-deploy-once",
+		"semantic-release": "semantic-release"
 	},
 	"keywords": [
 		"encrypt",
@@ -35,6 +39,7 @@
 		"@types/jest": "^23.3.2",
 		"@types/node": "^10.10.1",
 		"commitizen": "^2.10.1",
+		"coveralls": "^3.0.2",
 		"cz-conventional-changelog": "^2.1.0",
 		"jest": "^23.6.0",
 		"nodemon": "^1.18.4",
@@ -46,7 +51,10 @@
 		"typescript": "^3.0.3",
 		"typescript-formatter": "^7.2.2"
 	},
-	"dependencies": {},
+	"dependencies": {
+		"cross-fetch": "^2.2.2",
+		"express": "^4.16.3"
+	},
 	"config": {
 		"commitizen": {
 			"path": "node_modules/cz-conventional-changelog"

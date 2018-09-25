@@ -68,70 +68,83 @@ which is pretty damn secure for most applications.
 - [Other solutions](#other-solutions)
 - [Table of Contents](#table-of-contents)
 - [Installation](#installation)
-- [Usage](#usage)
-  - [Asynchronous examples](#asynchronous-examples)
-    - [Using Promises](#using-promises)
-    - [Using async/await](#using-asyncawait)
-  - [Synchronous examples](#synchronous-examples)
-  - [API](#api)
-  - [FAQ](#faq)
+- [Importing](#importing)
+- [Asynchronous usage](#asynchronous-usage)
+	- [Using Promises](#using-promises)
+	- [Using async/await](#using-asyncawait)
+- [Synchronous examples](#synchronous-examples)
+- [Configuration](#configuration)
+	- [API](#api)
+	- [FAQ](#faq)
+- [License](#license)
+  [Using Promises](#using-promises) - [Using async/await](#using-asyncawait)
+- [Synchronous examples](#synchronous-examples)
+- [Configuration](#configuration) - [API](#api) - [FAQ](#faq)
+- [License](#license) [Using Promises](#using-promises) -
+  [Using async/await](#using-asyncawait)
+- [Synchronous examples](#synchronous-examples)
+- [Configuration](#configuration) - [API](#api) - [FAQ](#faq)
+- [License](#license) [Using Promises](#using-promises) -
+  [Using async/await](#using-asyncawait)
+- [Synchronous examples](#synchronous-examples)
+- [Configuration](#configuration) - [API](#api) - [FAQ](#faq)
+- [License](#license) [Using Promises](#using-promises) -
+  [Using async/await](#using-asyncawait)
+- [Synchronous examples](#synchronous-examples)
+- [Configuration](#configuration) - [API](#api) - [FAQ](#faq)
+- [License](#license) [Using Promises](#using-promises) -
+  [Using async/await](#using-asyncawait) -
+  [Synchronous examples](#synchronous-examples) - [API](#api) - [FAQ](#faq)
+- [License](#license) [Using Promises](#using-promises) -
+  [Using async/await](#using-asyncawait) -
+  [Synchronous examples](#synchronous-examples) - [API](#api) - [FAQ](#faq)
+- [License](#license) [Using Promises](#using-promises) -
+  [Using async/await](#using-asyncawait) -
+  [Synchronous examples](#synchronous-examples) - [API](#api) - [FAQ](#faq)
+- [License](#license) [Using Promises](#using-promises) -
+  [Using async/await](#using-asyncawait) -
+  [Synchronous examples](#synchronous-examples) - [API](#api) - [FAQ](#faq)
+- [License](#license) [Using Promises](#using-promises) -
+  [Using async/await](#using-asyncawait) -
+  [Synchronous examples](#synchronous-examples) - [API](#api) - [FAQ](#faq)
+- [License](#license) [Using Promises](#using-promises) -
+  [Using async/await](#using-asyncawait) -
+  [Synchronous examples](#synchronous-examples) - [API](#api) - [FAQ](#faq)
+- [License](#license) [Using Promises](#using-promises) -
+  [Using async/await](#using-asyncawait) -
+  [Synchronous examples](#synchronous-examples) - [API](#api) - [FAQ](#faq)
 - [License](#license)
 
 ## Installation
 
 `npm install tiny-encrypt`
 
-## Usage
+## Importing
 
 Using CommonJS
 
 ```javascript
 const TinyEncrypt = require('tiny-encrypt');
-
-const Encrypt = TinyEncrypt({});
 ```
 
 Using ES6 Modules
 
 ```javascript
 import TinyEncrypt from 'tiny-encrypt';
-
-const Encrypt = new TinyEncrypt({});
 ```
 
-Using a configuration object
+## Asynchronous usage
 
-> Note: this example shows the default options. Passing a configuration object
-> is completely optional
-
-```javascript
-import TinyEncrypt from 'tiny-encrypt';
-
-const options: {
-  salt: crypto.randomBytes(16)
-  iterations: 1000,
-  keyLength: 16,
-  algorithm: 'sha512'
-}
-
-const Encrypt = new TinyEncrypt({options});
-```
-
-> Note: you can name it anything you want, on the import. I just prefer the name
-> `TinyEncrypt` for the class and `Encrypt` for the instance personally for
-> readability. All examples below use this naming convention and the variable
-> `password` since that's what it'll most commonly be used for.
-
-### Asynchronous examples
-
-#### Using Promises
+### Using Promises
 
 Create encrypted string
 
 ```javascript
-Encrypt.toHash('my_password_string').then((hashedPassword) => {
-	// save to database, etc.
-});
+TinyEncrypt()
+	.toHash('my_password_string')
+	.then((hashedPassword) => {
+		// save to database, etc.
+	});
 ```
 
 Check if encrypted string matches unencrypted string
@@ -140,18 +153,18 @@ Check if encrypted string matches unencrypted string
 const userInputPassword = 'password1';
 const hashedPassword = 'lkjl4j5lk2j4;l53j45lkjs;ldjflasfsd';
 
-Encrypt.isMatch(userInputPassword, hashedPassword).then((result) => {
+TinyEncrypt().isMatch(userInputPassword, hashedPassword).then((result) => {
 	result === true ? // login user, etc.
 });
 ```
 
-#### Using async/await
+### Using async/await
 
 Create encrypted string
 
 ```javascript
 async function doSomethingWithHashedPasswordAsynchronously() {
-	const hashedPassword = await Encrypt.toHash('my_password_string');
+	const hashedPassword = await TinyEncrypt().toHash('my_password_string');
 	// save to database, etc.
 }
 ```
@@ -163,7 +176,7 @@ const userInputPassword = 'password1';
 const hashedPassword = 'lkjl4j5lk2j4;l53j45lkjs;ldjflasfsd';
 
 async function authenticateUser(userInputPassword, hashedPassword) {
-	const isAuthenticated = await Encrypt.isMatch(
+	const isAuthenticated = await TinyEncrypt().isMatch(
 		userInputPassword,
 		hashedPassword,
 	);
@@ -172,12 +185,12 @@ async function authenticateUser(userInputPassword, hashedPassword) {
 }
 ```
 
-### Synchronous examples
+## Synchronous examples
 
 Create encrypted string
 
 ```javascript
-const hashedPassword = Encrypt.toHashSync('my_password_string');
+const hashedPassword = TinyEncrypt().toHashSync('my_password_string');
 ```
 
 Check if encrypted string matches unencrypted string
@@ -186,7 +199,37 @@ Check if encrypted string matches unencrypted string
 const userInputPassword = 'password1';
 const hashedPassword = 'lkjl4j5lk2j4;l53j45lkjs;ldjflasfsd';
 
-const isAuthenticated = Encrypt.isMatchSync(userInputPassword, hashedPassword);
+const isAuthenticated = TinyEncrypt().isMatchSync(
+	userInputPassword,
+	hashedPassword,
+);
+```
+
+## Configuration
+
+You can optionally pass in a configuration object for more control on the
+algorithmn, iterations, salt and key length.
+
+> Note: this example shows the default options.
+
+```javascript
+TinyEncrypt({
+  salt: crypto.randomBytes(16)
+  iterations: 1000,
+  keyLength: 16,
+  algorithm: 'sha512'
+}).toHash(// etc...);
+
+// or preferably for readability
+
+const options = {
+  salt: crypto.randomBytes(16)
+  iterations: 1000,
+  keyLength: 16,
+  algorithm: 'sha512'
+})
+
+TinyEncrypt(options).toHash(// etc...)
 ```
 
 ### API
@@ -261,7 +304,7 @@ interface Config {
 ### FAQ
 
 <details>
-<summary>Why are the asyncfunctions recommended over the sync versions?</summary>
+<summary>Why are the async functions recommended over the sync versions?</summary>
 
 The asynchronous functions will not tie up your resources (i.e. block the event
 loop) while the encryption/checking is taking place, while the synchronous
@@ -271,6 +314,24 @@ For simple scripts, the synchronous versions are fine and easier to work with if
 you're not familiar with promises or async/await. For servers and
 performance-critical applications, we strongly recommend you use the
 asynchronous functions only.
+
+</details>
+
+<details>
+<summary>Why use this over Bcrypt or another solution?</summary>
+
+Bcrypt and all of the other solutions are great!
+
+This package is very easy to use like Bcrypt, but also gives you more
+flexibility on how many iterations, etc. so you can make it as intense/less
+intense as you need for your program and squeeze evry last drop of perfromance
+out of it based on your needs.
+
+I haven't done any benchmarks yet, but it should be pretty fast since it's just
+sugar on Node's built in functions.
+
+Plus, it's extremely lightweight and you can read the souce code to see exactly
+what's going on and learn a little bit about crytography yourself.
 
 </details>
 

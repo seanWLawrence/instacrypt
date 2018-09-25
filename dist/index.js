@@ -37,16 +37,68 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var crypto_1 = require("crypto");
 /**
- * Encrypt/decrypt helper for the Node crypto package's pbkdf2 and pbkdf2Sync functions
+ * Encrypt and matching helper for the Node crypto package's pbkdf2 and pbkdf2Sync functions
  */
-var Encrypt = /** @class */ (function () {
-    function Encrypt(config) {
+var TinyEncrypt = /** @class */ (function () {
+    function TinyEncrypt(config) {
         this.keyLength = config.keyLength || 16;
         this.salt = config.salt || crypto_1.randomBytes(this.keyLength);
         this.iterations = config.iterations || 1000;
         this.algorithm = config.algorithm || 'sha512';
     }
-    Encrypt.prototype.createHash = function (password, salt) {
+    /**
+     * Asynchronously creates a new password hash as a HEX string
+     * @param password UTF-8 string to hash
+     * @example
+     * TinyEncrypt().toHash('my_password_string').then(hashedPassword => saveToDatabase(hashedPassword))
+     */
+    TinyEncrypt.prototype.toHash = function (password) {
+        return this._createHash(password);
+    };
+    /**
+     * Asynchronously checks that a previously hashed HEX string from this class matches the raw UTF-8 version
+     * @param password UTF-8 string to check against the hash
+     * @param previouslyHashedPassword previously-hashed HEX string to check against the new UTF-8 string password
+     * @example
+     * TinyEncrypt().isMatch('my_password_string', 'my_hashed_password_string').then(authenticated => loginUser() : redirectToLoginPage());
+     */
+    TinyEncrypt.prototype.isMatch = function (password, previouslyHashedPassword) {
+        return __awaiter(this, void 0, void 0, function () {
+            var salt, newlyHashedPassword;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        salt = this._getSalt(previouslyHashedPassword);
+                        return [4 /*yield*/, this._createHash(password, salt)];
+                    case 1:
+                        newlyHashedPassword = _a.sent();
+                        return [2 /*return*/, newlyHashedPassword === previouslyHashedPassword ? true : false];
+                }
+            });
+        });
+    };
+    /**
+     * Synchronously creates a new password hash as a HEX string
+     * @param password UTF-8 string to hash
+     * @example
+     * const hashedPassword = TinyEncrypt().toHashSync('my_password_string');
+     */
+    TinyEncrypt.prototype.toHashSync = function (password) {
+        return this._createHashSync(password);
+    };
+    /**
+     * Synchronously checks that a previously hashed HEX string from this class matches the raw UTF-8 version
+     * @param password UTF-8 string to check against the hash
+     * @param previouslyHashedPassword previously-hashed HEX string to check against the new UTF-8 string password
+     * @example
+     * const isAuthenticated = TinyEncrypt().isMatchSync('my_password_string', 'my_hashed_password_string')
+     */
+    TinyEncrypt.prototype.isMatchSync = function (password, previouslyHashedPassword) {
+        var salt = this._getSalt(previouslyHashedPassword);
+        var newlyHashedPassword = this._createHashSync(password, salt);
+        return newlyHashedPassword === previouslyHashedPassword ? true : false;
+    };
+    TinyEncrypt.prototype._createHash = function (password, salt) {
         var _this = this;
         if (salt === void 0) { salt = this.salt; }
         return new Promise(function (resolve, reject) {
@@ -61,7 +113,7 @@ var Encrypt = /** @class */ (function () {
             });
         });
     };
-    Encrypt.prototype.createHashSync = function (password, salt) {
+    TinyEncrypt.prototype._createHashSync = function (password, salt) {
         if (salt === void 0) { salt = this.salt; }
         var saltString = salt.toString('hex');
         var hashedPasswordBuffer = crypto_1.pbkdf2Sync(password, salt, this.iterations, this.keyLength, this.algorithm);
@@ -69,72 +121,23 @@ var Encrypt = /** @class */ (function () {
         var hashedPasswordWithSaltPrefix = saltString + ":" + hashedPasswordString;
         return hashedPasswordWithSaltPrefix;
     };
-    Encrypt.prototype.getSalt = function (hashedPasswordWithSaltPrefix) {
+    TinyEncrypt.prototype._getSalt = function (hashedPasswordWithSaltPrefix) {
         var salt = hashedPasswordWithSaltPrefix.split(':')[0];
         var saltBuffer = Buffer.from(salt, 'hex');
         return saltBuffer;
     };
-    /**
-     * Asynchronously creates a new password hash as a HEX string
-     * @param password UTF-8 string to hash
-     * @example
-     * const Encrypt = new Encrypt();
-     *
-     * Encrypt.toHash('my_password_string').then(hashedPassword => saveToDatabase(hashedPassword))
-     */
-    Encrypt.prototype.toHash = function (password) {
-        return this.createHash(password);
-    };
-    /**
-     * Asynchronously checks that a previously hashed HEX string from this class matches the raw UTF-8 version
-     * @param password UTF-8 string to check against the hash
-     * @param previouslyHashedPassword previously-hashed HEX string to check against the new UTF-8 string password
-     * @example
-     * const Encrypt = new Encrypt();
-     *
-     * Encrypt.isMatch('my_password_string', 'my_hashed_password_string').then(authenticated => loginUser() : redirectToLoginPage());
-     */
-    Encrypt.prototype.isMatch = function (password, previouslyHashedPassword) {
-        return __awaiter(this, void 0, void 0, function () {
-            var salt, newlyHashedPassword;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        salt = this.getSalt(previouslyHashedPassword);
-                        return [4 /*yield*/, this.createHash(password, salt)];
-                    case 1:
-                        newlyHashedPassword = _a.sent();
-                        return [2 /*return*/, newlyHashedPassword === previouslyHashedPassword ? true : false];
-                }
-            });
-        });
-    };
-    /**
-     * Synchronously creates a new password hash as a HEX string
-     * @param password UTF-8 string to hash
-     * @example
-     * const Encrypt = new Encrypt();
-     *
-     * const hashedPassword = Encrypt.toHashSync('my_password_string');
-     */
-    Encrypt.prototype.toHashSync = function (password) {
-        return this.createHashSync(password);
-    };
-    /**
-     * Synchronously checks that a previously hashed HEX string from this class matches the raw UTF-8 version
-     * @param password UTF-8 string to check against the hash
-     * @param previouslyHashedPassword previously-hashed HEX string to check against the new UTF-8 string password
-     * @example
-     * const Encrypt = new Encrypt();
-     *
-     * const isAuthenticated = Encrypt.isMatchSync('my_password_string', 'my_hashed_password_string')
-     */
-    Encrypt.prototype.isMatchSync = function (password, previouslyHashedPassword) {
-        var salt = this.getSalt(previouslyHashedPassword);
-        var newlyHashedPassword = this.createHashSync(password, salt);
-        return newlyHashedPassword === previouslyHashedPassword ? true : false;
-    };
-    return Encrypt;
+    return TinyEncrypt;
 }());
-exports.default = Encrypt;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi9zcmMvaW5kZXgudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztBQUFBLGlDQUF5RDtBQStDekQ7O0dBRUc7QUFDSDtJQU1DLGlCQUFZLE1BQWM7UUFDekIsSUFBSSxDQUFDLFNBQVMsR0FBRyxNQUFNLENBQUMsU0FBUyxJQUFJLEVBQUUsQ0FBQztRQUN4QyxJQUFJLENBQUMsSUFBSSxHQUFHLE1BQU0sQ0FBQyxJQUFJLElBQUksb0JBQVcsQ0FBQyxJQUFJLENBQUMsU0FBUyxDQUFDLENBQUM7UUFDdkQsSUFBSSxDQUFDLFVBQVUsR0FBRyxNQUFNLENBQUMsVUFBVSxJQUFJLElBQUksQ0FBQztRQUM1QyxJQUFJLENBQUMsU0FBUyxHQUFHLE1BQU0sQ0FBQyxTQUFTLElBQUksUUFBUSxDQUFDO0lBQy9DLENBQUM7SUFFTyw0QkFBVSxHQUFsQixVQUNDLFFBQWdCLEVBQ2hCLElBQXdCO1FBRnpCLGlCQXVCQztRQXJCQSxxQkFBQSxFQUFBLE9BQWUsSUFBSSxDQUFDLElBQUk7UUFFeEIsT0FBTyxJQUFJLE9BQU8sQ0FBQyxVQUFDLE9BQU8sRUFBRSxNQUFNO1lBQ2xDLE9BQUEsZUFBTSxDQUNMLFFBQVEsRUFDUixJQUFJLEVBQ0osS0FBSSxDQUFDLFVBQVUsRUFDZixLQUFJLENBQUMsU0FBUyxFQUNkLEtBQUksQ0FBQyxTQUFTLEVBQ2QsVUFBQyxLQUFLLEVBQUUsVUFBVTtnQkFDakIsSUFBSSxLQUFLLEVBQUU7b0JBQ1YsTUFBTSxDQUFDLEtBQUssQ0FBQyxDQUFDO2lCQUNkO2dCQUNELElBQU0sVUFBVSxHQUFHLElBQUksQ0FBQyxRQUFRLENBQUMsS0FBSyxDQUFDLENBQUM7Z0JBQ3hDLElBQU0sZ0JBQWdCLEdBQUcsVUFBVSxDQUFDLFFBQVEsQ0FBQyxLQUFLLENBQUMsQ0FBQztnQkFDcEQsSUFBTSx3QkFBd0IsR0FBTSxV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
+module.exports = function (options) {
+    if (options === void 0) { options = {}; }
+    return new TinyEncrypt(options);
+};
+module.exports.default = function (options) {
+    if (options === void 0) { options = {}; }
+    return new TinyEncrypt(options);
+};
+exports.default = (function (options) {
+    if (options === void 0) { options = {}; }
+    return new TinyEncrypt(options);
+});
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi9zcmMvaW5kZXgudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztBQUFBLGlDQUF5RDtBQStDekQ7O0dBRUc7QUFDSDtJQU1DLHFCQUFZLE1BQWM7UUFDekIsSUFBSSxDQUFDLFNBQVMsR0FBRyxNQUFNLENBQUMsU0FBUyxJQUFJLEVBQUUsQ0FBQztRQUN4QyxJQUFJLENBQUMsSUFBSSxHQUFHLE1BQU0sQ0FBQyxJQUFJLElBQUksb0JBQVcsQ0FBQyxJQUFJLENBQUMsU0FBUyxDQUFDLENBQUM7UUFDdkQsSUFBSSxDQUFDLFVBQVUsR0FBRyxNQUFNLENBQUMsVUFBVSxJQUFJLElBQUksQ0FBQztRQUM1QyxJQUFJLENBQUMsU0FBUyxHQUFHLE1BQU0sQ0FBQyxTQUFTLElBQUksUUFBUSxDQUFDO0lBQy9DLENBQUM7SUFFRDs7Ozs7T0FLRztJQUNJLDRCQUFNLEdBQWIsVUFBYyxRQUFnQjtRQUM3QixPQUFPLElBQUksQ0FBQyxXQUFXLENBQUMsUUFBUSxDQUFDLENBQUM7SUFDbkMsQ0FBQztJQUVEOzs7Ozs7T0FNRztJQUNVLDZCQUFPLEdBQXBCLFVBQ0MsUUFBZ0IsRUFDaEIsd0JBQWdDOzs7Ozs7d0JBRTFCLElBQUksR0FBRyxJQUFJLENBQUMsUUFBUSxDQUFDLHdCQUF3QixDQUFDLENBQUM7d0JBQ3pCLHFCQUFNLElBQUksQ0FBQyxXQUFXLENBQUMsUUFBUSxFQUFFLElBQUksQ0FBQyxFQUFBOzt3QkFBNUQsbUJBQW1CLEdBQUcsU0FBc0M7d0JBRWxFLHNCQUFPLG1CQUFtQixLQUFLLHdCQUF3QixDQUFDLENBQUMsQ0FBQyxJQUFJLENBQUMsQ0FBQyxDQUFDLEtBQUssRUFBQzs7OztLQUN2RTtJQUVEOzs7OztPQUtHO0lBQ0ksZ0NBQVUsR0FBakIsVUFBa0IsUUFBZ0I7UUFDakMsT0FBTyxJQUFJLENBQUMsZUFBZSxDQUFD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
