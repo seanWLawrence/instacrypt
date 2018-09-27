@@ -20,9 +20,7 @@
 		"build": "tsc",
 		"commit": "npm run build && npx git-cz",
 		"ci": "npm run lint && npm run test && npm publish",
-		"publish": "semantic-release",
-		"travis-deploy-once": "travis-deploy-once",
-		"semantic-release": "semantic-release"
+		"publish": "semantic-release"
 	},
 	"keywords": [
 		"encrypt",
