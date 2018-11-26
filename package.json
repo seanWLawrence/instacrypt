@@ -1,6 +1,6 @@
 {
 	"name": "instacrypt",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "Tiny string encryption and comparison library with both async and sync support",
 	"main": "dist/index.js",
 	"homepage": "https://github.com/seanwlawrence/instacrypt#readme",
