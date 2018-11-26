@@ -1,16 +1,14 @@
 <div align="center">
-<h1>tiny-encrypt</h1>
+<h1>instacrypt</h1>
 
 <p>Tiny string encryption and comparison library with both asyn and sync support.
 </div>
 
-[![npm](https://img.shields.io/npm/v/tiny-encrypt.svg?style=flat-square&colorB=blue)](https://www.npmjs.com/package/tiny-encrypt)
-[![Travis (.org)](https://img.shields.io/travis/seanWLawrence/tiny-encrypt.svg?style=flat-square)](https://travis-ci.org/seanWLawrence/tiny-encrypt)
-[![Coveralls github branch](https://img.shields.io/coveralls/github/seanWLawrence/tiny-encrypt/master.svg?style=flat-square&colorB=brightgreen)](https://coveralls.io/github/seanWLawrence/tiny-encrypt)
-[![GitHub last commit](https://img.shields.io/github/last-commit/seanwlawrence/tiny-encrypt.svg?style=flat-square)](https://github.com/seanwlawrence/tiny-encrypt/commits/master)
-![GitHub issues](https://img.shields.io/github/issues-raw/seanwlawrence/tiny-encrypt.svg?style=flat-square)
-![npm bundle size (minified + gzip)](https://img.shields.io/bundlephobia/minzip/tiny-encrypt.svg?style=flat-square)
-[![GitHub](https://img.shields.io/github/license/seanwlawrence/tiny-encrypt.svg?style=flat-square)](https://github.com/seanWLawrence/tiny-encrypt/blob/master/LICENSE.md)
+[![npm](https://img.shields.io/npm/v/instacrypt.svg?style=flat-square&colorB=blue)](https://www.npmjs.com/package/instacrypt)
+[![GitHub last commit](https://img.shields.io/github/last-commit/seanwlawrence/instacrypt.svg?style=flat-square)](https://github.com/seanwlawrence/instacrypt/commits/master)
+![GitHub issues](https://img.shields.io/github/issues-raw/seanwlawrence/instacrypt.svg?style=flat-square)
+![npm bundle size (minified + gzip)](https://img.shields.io/bundlephobia/minzip/instacrypt.svg?style=flat-square)
+[![GitHub](https://img.shields.io/github/license/seanwlawrence/instacrypt.svg?style=flat-square)](https://github.com/seanWLawrence/instacrypt/blob/master/LICENSE.md)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-blue.svg?style=flat-square)](http://commitizen.github.io/cz-cli/)
 
@@ -117,20 +115,20 @@ which is pretty damn secure for most applications.
 
 ## Installation
 
-`npm install tiny-encrypt`
+`npm install instacrypt`
 
 ## Importing
 
 Using CommonJS
 
 ```javascript
-const TinyEncrypt = require('tiny-encrypt');
+const InstaCrypt = require('instacrypt');
 ```
 
 Using ES6 Modules
 
 ```javascript
-import TinyEncrypt from 'tiny-encrypt';
+import InstaCrypt from 'instacrypt';
 ```
 
 ## Asynchronous usage
@@ -140,7 +138,7 @@ import TinyEncrypt from 'tiny-encrypt';
 Create encrypted string
 
 ```javascript
-TinyEncrypt()
+InstaCrypt()
 	.toHash('my_password_string')
 	.then((hashedPassword) => {
 		// save to database, etc.
@@ -153,7 +151,7 @@ Check if encrypted string matches unencrypted string
 const userInputPassword = 'password1';
 const hashedPassword = 'lkjl4j5lk2j4;l53j45lkjs;ldjflasfsd';
 
-TinyEncrypt().isMatch(userInputPassword, hashedPassword).then((result) => {
+InstaCrypt().isMatch(userInputPassword, hashedPassword).then((result) => {
 	result === true ? // login user, etc.
 });
 ```
@@ -164,7 +162,7 @@ Create encrypted string
 
 ```javascript
 async function doSomethingWithHashedPasswordAsynchronously() {
-	const hashedPassword = await TinyEncrypt().toHash('my_password_string');
+	const hashedPassword = await InstaCrypt().toHash('my_password_string');
 	// save to database, etc.
 }
 ```
@@ -176,7 +174,7 @@ const userInputPassword = 'password1';
 const hashedPassword = 'lkjl4j5lk2j4;l53j45lkjs;ldjflasfsd';
 
 async function authenticateUser(userInputPassword, hashedPassword) {
-	const isAuthenticated = await TinyEncrypt().isMatch(
+	const isAuthenticated = await InstaCrypt().isMatch(
 		userInputPassword,
 		hashedPassword,
 	);
@@ -190,7 +188,7 @@ async function authenticateUser(userInputPassword, hashedPassword) {
 Create encrypted string
 
 ```javascript
-const hashedPassword = TinyEncrypt().toHashSync('my_password_string');
+const hashedPassword = InstaCrypt().toHashSync('my_password_string');
 ```
 
 Check if encrypted string matches unencrypted string
@@ -199,7 +197,7 @@ Check if encrypted string matches unencrypted string
 const userInputPassword = 'password1';
 const hashedPassword = 'lkjl4j5lk2j4;l53j45lkjs;ldjflasfsd';
 
-const isAuthenticated = TinyEncrypt().isMatchSync(
+const isAuthenticated = InstaCrypt().isMatchSync(
 	userInputPassword,
 	hashedPassword,
 );
@@ -213,7 +211,7 @@ algorithmn, iterations, salt and key length.
 > Note: this example shows the default options.
 
 ```javascript
-TinyEncrypt({
+InstaCrypt({
   salt: crypto.randomBytes(16)
   iterations: 1000,
   keyLength: 16,
@@ -229,7 +227,7 @@ const options = {
   algorithm: 'sha512'
 })
 
-TinyEncrypt(options).toHash(// etc...)
+InstaCrypt(options).toHash(// etc...)
 ```
 
 ### API
@@ -253,7 +251,7 @@ Checks if an unencrypted string matches an encrypted string synchronously.
 
 `config: Config`
 
-Optional configuration object to pass into the TinyEncrypt instance
+Optional configuration object to pass into the InstaCrypt instance
 
 ```typescript
 interface Config {

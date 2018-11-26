@@ -1,15 +1,15 @@
 {
-	"name": "tiny-encrypt",
-	"version": "0.0.0-development",
+	"name": "instacrypt",
+	"version": "1.0.0",
 	"description": "Tiny string encryption and comparison library with both async and sync support",
 	"main": "dist/index.js",
-	"homepage": "https://github.com/seanwlawrence//tiny-encrypt#readme",
+	"homepage": "https://github.com/seanwlawrence/instacrypt#readme",
 	"bugs": {
-		"url": "https://github.com/seanWLawrence/tiny-encrypt/issues"
+		"url": "https://github.com/seanWLawrence/instacrypt/issues"
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/seanWLawrence/tiny-encrypt.git"
+		"url": "https://github.com/seanWLawrence/instacrypt.git"
 	},
 	"scripts": {
 		"lint": "tslint -c tslint.json 'src/**/*.ts'",
@@ -20,7 +20,6 @@
 		"build": "tsc",
 		"commit": "npm run build && npx git-cz",
 		"ci": "npm run lint && npm run test && npm publish",
-		"publish": "semantic-release"
 	},
 	"keywords": [
 		"encrypt",
