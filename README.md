@@ -1,7 +1,7 @@
 <div align="center">
 <h1>instacrypt</h1>
 
-<p>Tiny string encryption and comparison library with both asyn and sync support.
+<p>String encryption and comparison library with both async and sync support.
 </div>
 
 [![npm](https://img.shields.io/npm/v/instacrypt.svg?style=flat-square&colorB=blue)](https://www.npmjs.com/package/instacrypt)
@@ -15,9 +15,7 @@
 ## The problem
 
 Encrypting and testing strings is hard, unless you want to dive head first into
-[Node's crypto documentation](https://nodejs.org/api/crypto.html) or use a
-package like [bcrypt](https://www.npmjs.com/package/bcrypt) that will install
-some extra dependencies.
+[Node's crypto documentation](https://nodejs.org/api/crypto.html)
 
 ## This solution
 
@@ -38,7 +36,6 @@ type checking if your using TypeScript or an editor with built-in support like
 
 ## What this plugin is not
 
-- A custom algorithm, or 'hacker-proof ultra 3000' cryptography module.
 - A
   [Cipher](https://nodejs.org/api/crypto.html#crypto_crypto_createcipheriv_algorithm_key_iv_options)
   or decryption tool (once you create an encrypted string, you can only compare

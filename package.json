@@ -19,7 +19,7 @@
 		"develop": "nodemon",
 		"build": "tsc",
 		"commit": "npm run build && npx git-cz",
-		"ci": "npm run lint && npm run test && npm publish",
+		"ci": "npm run lint && npm run test && npm publish"
 	},
 	"keywords": [
 		"encrypt",
